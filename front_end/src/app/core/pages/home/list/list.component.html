@@ -1,0 +1,54 @@
+<!-- src/app/components/list/list.component.html -->
+<div class="bg-light py-5">
+  <div class="p-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="font-weight-bold text-primary">Sports Questionnaire Insights</h2>
+      <button class="btn btn-primary btn-sm btn-lg rounded-pill shadow-sm" (click)="addNewResponse()">
+        <i class="fas fa-plus-circle me-2"></i>Add New Response
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="p-0">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped mb-0">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="px-3">ID</th>
+                <th class="px-3">Player Type</th>
+                <th class="px-3">Sport Type</th>
+                <th class="px-3">Experience</th>
+                <th class="px-3">Position</th>
+                <th class="px-3">Training Hours</th>
+                <th class="px-3">Team Level</th>
+                <th class="px-3">Coaching Philosophy</th>
+                <th class="px-3">Favorite Team</th>
+                <th class="px-3">Watching Frequency</th>
+                <th class="px-3">Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let response of responses">
+                <td class="px-3">{{response.id}}</td>
+                <td class="px-3"><span class="badge" [ngClass]="response.player_type === 'player' ? 'bg-info' : 'bg-success'">{{response.player_type}}</span></td>
+                <td class="px-3">{{response.sport_type}}</td>
+                <td class="px-3">{{response.experience}}</td>
+                <td class="px-3">{{response.position || '-'}}</td>
+                <td class="px-3">{{response.training_hours || '-'}}</td>
+                <td class="px-3">{{response.team_level || '-'}}</td>
+                <td class="px-3">{{response.coaching_philosophy || '-'}}</td>
+                <td class="px-3">{{response.favorite_team || '-'}}</td>
+                <td class="px-3">{{response.watching_frequency || '-'}}</td>
+                <td class="px-3">{{response.created_at | date:'short'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 text-center">
+      <p class="text-muted">Total Responses: {{responses.length}}</p>
+    </div>
+</div>
+</div>

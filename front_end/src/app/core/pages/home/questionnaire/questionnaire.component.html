@@ -1,0 +1,110 @@
+<div class="questionnaire-container">
+    <!-- <app-progress-bar
+    [progress]="((currentStepIndex + 1) / steps.length) * 100"
+  ></app-progress-bar> -->
+    <form (ngSubmit)="submitQuestionnaire()" #questionnaireForm="ngForm">
+      <div class="step" *ngIf="!formSubmitted">
+        <h3 class="question-title">{{ steps[currentStepIndex].label }}</h3>
+  
+        <ng-container *ngFor="let field of steps[currentStepIndex].fields">
+          <div class="field" [ngSwitch]="field.type">
+            <label class="field-label" [for]="field.key">{{ field.templateOptions.label }}</label>
+  
+            <input *ngSwitchCase="'input'" 
+              [type]="field.templateOptions.type || 'text'"
+              [(ngModel)]="responses[field.key]"
+              [required]="field.templateOptions.required"
+              class="input-field"
+              (ngModelChange)="setResponse(field.key, $event)"
+              [disabled]="disableNavigation"
+              [id]="field.key"
+              [name]="field.key"
+            />
+  
+            <select *ngSwitchCase="'select'"
+              [(ngModel)]="responses[field.key]"
+              [required]="field.templateOptions.required"
+              class="select-field"
+              (ngModelChange)="setResponse(field.key, $event)"
+              [disabled]="disableNavigation"
+              [id]="field.key"
+              [name]="field.key"
+            >
+              <option *ngFor="let option of field.templateOptions.options" [value]="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+  
+            <div *ngSwitchCase="'radio'" class="radio-group">
+              <label *ngFor="let option of field.templateOptions.options; let i = index" class="radio-option">
+                <input
+                  type="radio"
+                  [value]="option.value"
+                  [(ngModel)]="responses[field.key]"
+                  [required]="field.templateOptions.required"
+                  (ngModelChange)="setResponse(field.key, $event)"
+                  [disabled]="disableNavigation"
+                  [id]="field.key + '_' + i"
+                  [name]="field.key"
+                />
+                {{ option.label }}
+              </label>
+            </div>
+  
+            <div *ngSwitchCase="'checkbox'" class="checkbox-group">
+              <label *ngFor="let option of field.templateOptions.options; let i = index" class="checkbox-option">
+                <input
+                  type="checkbox"
+                  [value]="option.value"
+                  [(ngModel)]="responses[field.key]"
+                  [required]="field.templateOptions.required"
+                  (ngModelChange)="setResponse(field.key, $event)"
+                  [disabled]="disableNavigation"
+                  [id]="field.key + '_' + i"
+                  [name]="field.key"
+                />
+                {{ option.label }}
+              </label>
+            </div>
+  
+            <textarea *ngSwitchCase="'textarea'"
+              [(ngModel)]="responses[field.key]"
+              [required]="field.templateOptions.required"
+              class="textarea-field"
+              (ngModelChange)="setResponse(field.key, $event)"
+              [disabled]="disableNavigation"
+              [id]="field.key"
+              [name]="field.key"
+            ></textarea>
+  
+          </div>
+        </ng-container>
+      </div>
+  
+      <div class="success-message" *ngIf="formSubmitted">
+        <div class="success-animation">
+          <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+          </svg>
+        </div>
+        <h3 class="success-title">Questionnaire Submitted Successfully!</h3>
+        <p class="success-text">Thank you for completing the questionnaire. Your responses have been recorded.</p>
+        <p class="redirect-text">Redirecting to list in <span class="countdown">{{ countdown }}</span> seconds...</p>
+      </div>
+  
+      <div class="navigation" *ngIf="!formSubmitted">
+        <button type="button" class="btn btn-previous" (click)="prevStep()" [disabled]="currentStepIndex === 0 || disableNavigation">
+          Previous
+        </button>
+        <button type="button" class="btn btn-next" (click)="nextStep()" *ngIf="currentStepIndex < steps.length - 1" [disabled]="disableNavigation">
+          Next
+        </button>
+        <button type="submit" class="btn btn-submit" 
+                *ngIf="questionnaireForm.valid && !disableNavigation">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+  
